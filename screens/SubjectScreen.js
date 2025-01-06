@@ -161,7 +161,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: "100%",
+    marginHorizontal: 15,
+    marginTop: 15,
     paddingVertical: 8,
+    marginBottom: 10,
   },
   footerText: {
     fontSize: 15,
