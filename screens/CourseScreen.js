@@ -8,9 +8,19 @@ const CourseScreen = ({ route }) => {
   const { student } = route.params;
   const course = courses.find((course) => course.id === student.course_id);
 
+  if (!course) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text variant="bodyLarge" style={styles.errorText}>
+          Course not found
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.bannerContainer}>
           <Image source={banner} style={styles.image} resizeMode="contain" />
         </View>
@@ -52,6 +62,10 @@ const CourseScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    paddingBottom: 100, // Ensures space for footer on small screens
+  },
   bannerContainer: {
     alignItems: "center",
   },
@@ -75,13 +89,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 10,
     textAlign: "center",
-    color: "#000", // Ensure text color is black
+    color: "#000",
   },
   subDetails: {
     fontSize: 17,
     marginTop: 10,
     textAlign: "center",
-    color: "#000", // Ensure text color is black
+    color: "#000",
   },
   divider: {
     width: 300,
@@ -93,30 +107,41 @@ const styles = StyleSheet.create({
     fontSize: 17,
     marginTop: 20,
     fontWeight: "bold",
-    color: "#000", // Ensure text color is black
+    color: "#000",
   },
   courseDetailsContainer: {
     width: "90%",
     marginTop: 15,
-    gap: 2,
   },
   courseDetails: {
     fontSize: 14,
     lineHeight: 21,
-    color: "#000", // Ensure text color is black
+    color: "#000",
   },
   footer: {
     backgroundColor: "#70116d",
     marginHorizontal: 15,
     position: "absolute",
     bottom: 0,
+    width: "100%",
     paddingVertical: 8,
-    marginBottom: 10,
   },
   footerText: {
     fontSize: 15,
     textAlign: "center",
     color: "#fff",
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    padding: 20,
+  },
+  errorText: {
+    fontSize: 20,
+    color: "red",
+    fontWeight: "bold",
   },
 });
 
