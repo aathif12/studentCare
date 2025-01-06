@@ -4,7 +4,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "./screens/LoginScreen";
+import LoginScreen from "./screens/LoginScreen";
 import Home from "./screens/HomeScreen";
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -23,7 +23,7 @@ export default function App() {
               }}
               initialRouteName="Login"
             >
-              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="Home" component={Home} />
             </Stack.Navigator>
           </NavigationContainer>

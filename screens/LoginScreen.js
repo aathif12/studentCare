@@ -1,26 +1,38 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { students } from "../assets/data/StudentsDb";
-import { ScrollView, View } from "react-native";
-import { TextInput } from "react-native-web";
+import {
+  ScrollView,
+  View,
+  StyleSheet,
+  Button,
+  Image,
+  Text,
+  TextInput,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
-export default function Login() {
+export default function LoginScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [err, setError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
+
   const handleLogin = () => {
-    if (username === "" && password === "") {
+    if (username === "" || password === "") {
       setError(true);
       return;
     }
     const student = students.find(
-      (student) => student.username == username && student.password == password
+      (student) =>
+        student.username === username && student.password === password
     );
     if (student) {
       navigation.navigate("Home", { student });
       setUsername("");
       setPassword("");
+      setError(false);
     } else {
       setError(true);
     }
@@ -29,77 +41,40 @@ export default function Login() {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Image source={banner} style={styles.image} resizeMode="contain" />
-        <Text variant="headlineLarge" style={styles.title}>
-          Student Login
-        </Text>
+        <Image
+          source={require("../assets/Logo.png")}
+          style={styles.image}
+          resizeMode="contain"
+        />
+        <Text style={styles.title}>Student Login</Text>
         <View style={styles.inputContainer}>
           <TextInput
-            label="Username"
-            mode="outlined"
-            value={userName}
-            theme={{
-              colors: {
-                background: "#fff",
-                outline: "#424242",
-                primary: "#000000",
-                placeholder: "#000000",
-              },
-            }}
-            contentStyle={{ color: "#000000" }}
+            placeholder="Username"
+            value={username}
             style={styles.input}
-            onChangeText={(text) => setUserName(text)}
+            onChangeText={(text) => setUsername(text)}
           />
           <View>
             <TextInput
-              label="Password"
-              mode="outlined"
+              placeholder="Password"
               value={password}
-              secureTextEntry={showPassword ? false : true}
-              theme={{
-                colors: {
-                  background: "#fff",
-                  outline: "#424242",
-                  primary: "#000000",
-                  placeholder: "#000000",
-                },
-              }}
-              contentStyle={{ color: "#000000" }}
+              secureTextEntry={!showPassword}
               style={styles.input}
               onChangeText={(text) => setPassword(text)}
             />
-            {showPassword ? (
-              <Ionicons
-                name="eye-off"
-                size={25}
-                color="#000000"
-                style={styles.eyeIcon}
-                onPress={() => setShowPassword(false)}
-              />
-            ) : (
-              <Ionicons
-                name="eye"
-                size={25}
-                color="#000000"
-                style={styles.eyeIcon}
-                onPress={() => setShowPassword(true)}
-              />
-            )}
+            <Ionicons
+              name={showPassword ? "eye-off" : "eye"}
+              size={25}
+              color="#000000"
+              style={styles.eyeIcon}
+              onPress={() => setShowPassword(!showPassword)}
+            />
           </View>
-          <Button
-            mode="contained"
-            buttonColor="#70116d"
-            textColor="#fff"
-            labelStyle={styles.buttonText}
-            style={styles.button}
-            onPress={handleLogin}
-          >
-            Login
-          </Button>
-          {error ? (
-            <Error text="Please check your username and password" />
-          ) : (
-            <></>
+          <Button title="Login" color="#70116d" onPress={handleLogin} />
+          {err && (
+            <Text style={{ color: "red", marginTop: 10 }}>
+              Please check your username and password
+            </Text>
           )}
         </View>
       </View>
@@ -110,38 +85,37 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    flex: 1,
+    padding: 20,
   },
   image: {
-    width: 350,
-    borderRadius: 10,
-    marginTop: -25,
+    width: 200,
+    height: 100,
+    marginBottom: 20,
   },
   title: {
+    fontSize: 24,
+    fontWeight: "bold",
     color: "black",
-    textTransform: "uppercase",
+    marginBottom: 20,
     textAlign: "center",
   },
   inputContainer: {
-    marginTop: 50,
-    width: 400,
-    paddingHorizontal: 16,
-    gap: 20,
+    width: "100%",
+    marginTop: 20,
   },
   input: {
-    fontSize: 20,
-  },
-  button: {
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    marginTop: 15,
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: "bold",
+    borderWidth: 1,
+    borderColor: "#424242",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 15,
+    fontSize: 16,
+    color: "#000",
   },
   eyeIcon: {
     position: "absolute",
-    top: 19,
-    right: 20,
+    top: 12,
+    right: 10,
   },
 });
